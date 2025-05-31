@@ -862,15 +862,15 @@
                 ];
                 
                 console.log('✅ Events array created:', realEvents.length);
-                displayEvents(realEvents);
+                showEvents(realEvents);
                 
             } catch (error) {
                 console.error('❌ Error in loadEventbriteEvents:', error);
             }
         }
 
-        function displayEvents(events) {
-            console.log('📋 Starting displayEvents with', events.length, 'events');
+        function showEvents(events) {
+            console.log('📋 Starting showEvents with', events.length, 'events');
             
             const eventsGrid = document.querySelector('.events-grid');
             
@@ -885,7 +885,7 @@
             events.forEach((event, index) => {
                 console.log(`Creating event ${index + 1}:`, event.name.text);
                 try {
-                    const eventCard = createSimpleEventCard(event);
+                    const eventCard = createCard(event);
                     if (eventCard) {
                         eventsGrid.appendChild(eventCard);
                         console.log('✅ Event card added:', event.name.text);
@@ -898,8 +898,8 @@
             console.log('✅ All events processed');
         }
 
-        function createSimpleEventCard(event) {
-            console.log('🎟️ Creating simple card for:', event.name.text);
+        function createCard(event) {
+            console.log('🎟️ Creating card for:', event.name.text);
             
             const card = document.createElement('div');
             card.className = 'event-card scroll-fade';
@@ -921,7 +921,7 @@
                 </div>
             `;
 
-            console.log('✅ Simple card created for:', eventTitle);
+            console.log('✅ Card created for:', eventTitle);
             return card;
         }
 
