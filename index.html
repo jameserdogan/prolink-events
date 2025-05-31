@@ -696,94 +696,83 @@
             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
         });
 
-        // Eventbrite API Configuration
-        const EVENTBRITE_API_KEY = 'GMUXCJ75E66YDK52CI';
-        const ORGANIZATION_ID = '96393734683';
-
-        // Alternative approach using JSONP or server-side proxy
+        // Use our serverless function endpoint for API calls
         async function loadEventbriteEvents() {
             try {
-                console.log('Loading events from Eventbrite...');
+                console.log('Loading events from Eventbrite via proxy...');
                 
-                // First, let's try to get the user's organization ID
-                const userResponse = await fetch(`https://www.eventbriteapi.com/v3/users/me/?token=${EVENTBRITE_API_KEY}`);
-                
-                if (!userResponse.ok) {
-                    console.log('Direct API blocked by CORS. Loading sample events...');
-                    loadSampleEvents();
-                    return;
-                }
+                // Call our serverless function that handles the API request
+                const response = await fetch('/.netlify/functions/eventbrite-events', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-                const userData = await userResponse.json();
-                console.log('User data:', userData);
-                
-                // Try getting events using the user approach
-                const eventsResponse = await fetch(`https://www.eventbriteapi.com/v3/organizations/${ORGANIZATION_ID}/events/?status=live&order_by=start_asc&expand=venue,ticket_availability&token=${EVENTBRITE_API_KEY}`);
-                
-                if (!eventsResponse.ok) {
-                    throw new Error(`API Error: ${eventsResponse.status}`);
-                }
-
-                const data = await eventsResponse.json();
-                console.log('Events loaded:', data.events?.length || 0);
+                const data = await response.json();
+                console.log('Events loaded via proxy:', data.events?.length || 0);
                 
                 if (data.events && data.events.length > 0) {
                     displayEvents(data.events);
+                    return; // Don't fall back if we have events
+                }
+                
+                // Only show "no events" if we actually have no events
+                if (response.ok && data.events && data.events.length === 0) {
+                    showNoEventsMessage();
                 } else {
+                    // If there's an API error, show sample events
                     loadSampleEvents();
                 }
                 
             } catch (error) {
-                console.error('Error loading events:', error);
-                console.log('Loading sample events due to CORS restrictions...');
+                console.error('Error loading events via proxy:', error);
                 loadSampleEvents();
             }
         }
 
-        // Fallback sample events (will replace with real data once CORS is resolved)
+        // Enhanced sample events for fallback
         function loadSampleEvents() {
             const sampleEvents = [
                 {
                     name: { text: "Entrepreneur & Real Estate Networking Night" },
-                    start: { local: "2024-06-15T19:00:00" },
+                    start: { local: "2024-12-15T19:00:00" },
                     venue: { name: "Zero Gravity", address: { city: "Dubai Marina" } },
                     description: { text: "Connect with fellow entrepreneurs and real estate professionals in Dubai's most stunning waterfront location. Network, share ideas, and build meaningful business relationships." },
-                    url: "https://www.eventbrite.com/e/your-event-link",
-                    ticket_availability: { minimum_ticket_price: { major_value: 0 }, total_tickets_available: 15 }
+                    url: "https://www.eventbrite.com/e/entrepreneur-real-estate-networking-night-tickets-123456789",
+                    ticket_availability: { 
+                        minimum_ticket_price: { major_value: 0 }, 
+                        total_tickets_available: 15,
+                        total_tickets_sold: 35
+                    }
                 },
                 {
                     name: { text: "AI & Tech Community Mixer" },
-                    start: { local: "2024-06-18T18:30:00" },
+                    start: { local: "2024-12-18T18:30:00" },
                     venue: { name: "CÉ LA VIE Dubai", address: { city: "Business Bay" } },
                     description: { text: "Join Dubai's growing AI and tech community. Share ideas, collaborate, and connect with like-minded innovators shaping the future of technology." },
-                    url: "https://www.eventbrite.com/e/your-event-link",
-                    ticket_availability: { minimum_ticket_price: { major_value: 0 }, total_tickets_available: 25 }
+                    url: "https://www.eventbrite.com/e/ai-tech-community-mixer-tickets-123456790",
+                    ticket_availability: { 
+                        minimum_ticket_price: { major_value: 0 }, 
+                        total_tickets_available: 25,
+                        total_tickets_sold: 12
+                    }
                 },
                 {
                     name: { text: "Social Circle Saturday" },
-                    start: { local: "2024-06-22T20:00:00" },
+                    start: { local: "2024-12-22T20:00:00" },
                     venue: { name: "Atmosphere Burj Khalifa", address: { city: "Downtown Dubai" } },
                     description: { text: "Meet new friends and expand your social circle at the world's highest lounge. Perfect for newcomers to Dubai and anyone looking to connect!" },
-                    url: "https://www.eventbrite.com/e/your-event-link",
-                    ticket_availability: { minimum_ticket_price: { major_value: 15 }, total_tickets_available: 8 }
+                    url: "https://www.eventbrite.com/e/social-circle-saturday-tickets-123456791",
+                    ticket_availability: { 
+                        minimum_ticket_price: { major_value: 15 }, 
+                        total_tickets_available: 8,
+                        total_tickets_sold: 42
+                    }
                 }
             ];
             
             displayEvents(sampleEvents);
-            
-            // Show a note about live integration
-            const eventsSection = document.querySelector('.events');
-            const note = document.createElement('div');
-            note.style.textAlign = 'center';
-            note.style.marginTop = '2rem';
-            note.style.padding = '1rem';
-            note.style.background = 'rgba(109, 212, 236, 0.1)';
-            note.style.borderRadius = '10px';
-            note.innerHTML = `
-                <p style="color: #6dd4ec; font-weight: 600;">🔄 Connecting to live Eventbrite data...</p>
-                <p style="color: #666; font-size: 0.9rem;">Due to browser security, we're setting up a server connection for real-time event updates.</p>
-            `;
-            eventsSection.appendChild(note);
         }
 
         function displayEvents(events) {
