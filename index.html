@@ -890,7 +890,7 @@
         <div class="container">
             <h2 class="section-title scroll-fade">Upcoming Events</h2>
             <div class="events-grid">
-                <!-- Events will be loaded dynamically -->
+                <!-- Events will be loaded dynamically via JavaScript -->
                 <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
                     <div class="loading"></div>
                     <p style="margin-top: 1rem; color: #666;">Loading amazing events...</p>
@@ -1157,12 +1157,12 @@
             console.log('🎯 Loading ProLink events...');
             
             try {
-                // Real events data (you can update this with your actual Eventbrite API)
+                // Real events data with current 2025 dates
                 const realEvents = [
                     {
                         name: { text: "Expat Entrepreneurs Meetup DXB" },
-                        start: { local: "2024-12-05T18:30:00" },
-                        venue: { name: "Dubai Marina", address: { city: "Dubai" } },
+                        start: { local: "2025-06-05T18:30:00" },
+                        venue: { name: "Zero Gravity", address: { city: "Dubai Marina" } },
                         description: { text: "Launch, grow & connect in Dubai! Perfect for expat entrepreneurs looking to build networks and grow their businesses in the UAE." },
                         url: "https://www.eventbrite.co.uk/e/expat-entrepreneurs-meetup-dxb-launch-grow-connect-in-dubai-tickets-1338442711179",
                         eventType: "entrepreneur",
@@ -1174,8 +1174,8 @@
                     },
                     {
                         name: { text: "Real Estate Networking Event DXB" },
-                        start: { local: "2024-12-08T19:00:00" },
-                        venue: { name: "Business Bay", address: { city: "Dubai" } },
+                        start: { local: "2025-06-08T19:00:00" },
+                        venue: { name: "CÉ LA VIE Dubai", address: { city: "Business Bay" } },
                         description: { text: "Connect with real estate professionals, investors, and industry leaders. Perfect for agents, developers, and property enthusiasts." },
                         url: "https://www.eventbrite.co.uk/e/real-estate-networking-event-dxb-tickets-1376583421069",
                         eventType: "realestate",
@@ -1187,8 +1187,8 @@
                     },
                     {
                         name: { text: "AI & Tech Networking Night DXB" },
-                        start: { local: "2024-12-10T18:30:00" },
-                        venue: { name: "DIFC", address: { city: "Dubai" } },
+                        start: { local: "2025-06-12T18:30:00" },
+                        venue: { name: "Atmosphere Burj Khalifa", address: { city: "DIFC" } },
                         description: { text: "Meet founders, engineers & innovators! Join Dubai's growing AI and tech community for networking, collaboration, and innovation." },
                         url: "https://www.eventbrite.co.uk/e/ai-tech-networking-night-dxb-meet-founders-engineers-innovators-tickets-1338309432539",
                         eventType: "tech",
@@ -1200,8 +1200,8 @@
                     },
                     {
                         name: { text: "Social Circle DXB" },
-                        start: { local: "2024-12-12T20:00:00" },
-                        venue: { name: "JBR", address: { city: "Dubai" } },
+                        start: { local: "2025-06-15T20:00:00" },
+                        venue: { name: "Skybar", address: { city: "JBR" } },
                         description: { text: "Meet new people & make friends! Perfect for newcomers to Dubai and anyone looking to expand their social circle in the city." },
                         url: "https://www.eventbrite.co.uk/e/social-circle-dxb-meet-new-people-make-friends-tickets-1376693680859",
                         eventType: "social",
@@ -1213,8 +1213,8 @@
                     },
                     {
                         name: { text: "Build Smart - AI Chatbots Workshop" },
-                        start: { local: "2024-12-15T14:00:00" },
-                        venue: { name: "Dubai Internet City", address: { city: "Dubai" } },
+                        start: { local: "2025-06-18T14:00:00" },
+                        venue: { name: "Hub71", address: { city: "Dubai Internet City" } },
                         description: { text: "Learn how to build AI chatbots & agents! Hands-on workshop for entrepreneurs and tech enthusiasts wanting to leverage AI." },
                         url: "https://www.eventbrite.co.uk/e/build-smart-learn-how-to-build-ai-chatbots-agents-tickets-1343683195609",
                         eventType: "workshop",
@@ -1226,8 +1226,8 @@
                     },
                     {
                         name: { text: "Divorced & Dating DXB Speed Dating" },
-                        start: { local: "2024-12-18T19:30:00" },
-                        venue: { name: "City Walk", address: { city: "Dubai" } },
+                        start: { local: "2025-06-22T19:30:00" },
+                        venue: { name: "Address Beach Resort", address: { city: "City Walk" } },
                         description: { text: "Speed dating night for Dubai's divorced and dating community. Meet like-minded singles in a fun, relaxed environment." },
                         url: "https://www.eventbrite.co.uk/e/divorced-dating-dxb-speed-dating-night-tickets-1349748707719",
                         eventType: "dating",
@@ -1252,7 +1252,7 @@
             const sampleEvents = [
                 {
                     name: { text: "Entrepreneur & Real Estate Networking Night" },
-                    start: { local: "2024-12-15T19:00:00" },
+                    start: { local: "2025-06-10T19:00:00" },
                     venue: { name: "Zero Gravity", address: { city: "Dubai Marina" } },
                     description: { text: "Connect with fellow entrepreneurs and real estate professionals in Dubai's most stunning waterfront location." },
                     url: "https://www.eventbrite.com/o/prolink-events-90328674763",
@@ -1265,7 +1265,7 @@
                 },
                 {
                     name: { text: "AI & Tech Community Mixer" },
-                    start: { local: "2024-12-18T18:30:00" },
+                    start: { local: "2025-06-14T18:30:00" },
                     venue: { name: "CÉ LA VIE Dubai", address: { city: "Business Bay" } },
                     description: { text: "Join Dubai's growing AI and tech community. Share ideas, collaborate, and connect with like-minded innovators." },
                     url: "https://www.eventbrite.com/o/prolink-events-90328674763",
@@ -1278,7 +1278,7 @@
                 },
                 {
                     name: { text: "Social Circle Saturday" },
-                    start: { local: "2024-12-22T20:00:00" },
+                    start: { local: "2025-06-21T20:00:00" },
                     venue: { name: "Atmosphere Burj Khalifa", address: { city: "Downtown Dubai" } },
                     description: { text: "Meet new friends and expand your social circle at the world's highest lounge. Perfect for newcomers to Dubai!" },
                     url: "https://www.eventbrite.com/o/prolink-events-90328674763",
@@ -1385,7 +1385,7 @@
                 }
             }
 
-            // Check availability
+            // Check availability - only change display for sold out or past events
             let availabilityText = '';
             let ticketText = 'Get Tickets';
             
@@ -1401,13 +1401,14 @@
                 } else if (available <= 10 && available > 0) {
                     availabilityText = `<div style="color: #f39c12; font-weight: 600; margin-top: 0.5rem;">⚡ Only ${available} spots left!</div>`;
                     priceClass = 'price-tag limited-tag';
+                    // Keep priceDisplay as "Tickets Available"
                 }
             }
 
             // Check if event is in the past
             if (!isUpcoming) {
                 availabilityText = '<div style="color: #95a5a6; font-weight: 600; margin-top: 0.5rem;">📅 Event Completed</div>';
-                priceDisplay = 'Completed';
+                priceDisplay = 'Event Completed';
                 ticketText = 'View Photos';
             }
 
@@ -1442,10 +1443,33 @@
             `;
         }
 
-        // Initialize everything
+        // Force refresh of events display
+        function forceRefreshEvents() {
+            console.log('🔄 Force refreshing events...');
+            const eventsGrid = document.querySelector('.events-grid');
+            if (eventsGrid) {
+                eventsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <div class="loading"></div>
+                        <p style="margin-top: 1rem; color: #666;">Loading events with correct pricing...</p>
+                    </div>
+                `;
+                
+                // Wait a moment then load events
+                setTimeout(() => {
+                    loadEventbriteEvents();
+                }, 1000);
+            }
+        }
+
+        // Initialize everything and force refresh
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🎉 ProLink Events website loaded!');
-            loadEventbriteEvents();
+            
+            // Force a complete refresh of events
+            setTimeout(() => {
+                forceRefreshEvents();
+            }, 500);
             
             // Add some loading delay for better UX
             setTimeout(() => {
@@ -1454,7 +1478,7 @@
                         el.classList.add('visible');
                     }
                 });
-            }, 500);
+            }, 1500);
         });
 
         // Analytics tracking (replace with your Google Analytics ID)
