@@ -84,70 +84,8 @@
             overflow: hidden;
         }
 
-        /* Additional Static Wave Layers */
-        .flowing-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                /* Curved wave lines */
-                radial-gradient(ellipse 250% 30% at 45% 25%, transparent 49%, rgba(109, 212, 236, 0.04) 50%, rgba(109, 212, 236, 0.04) 51%, transparent 52%),
-                radial-gradient(ellipse 220% 35% at 75% 45%, transparent 49%, rgba(109, 212, 236, 0.03) 50%, rgba(109, 212, 236, 0.03) 51%, transparent 52%),
-                radial-gradient(ellipse 280% 25% at 25% 70%, transparent 49%, rgba(109, 212, 236, 0.025) 50%, rgba(109, 212, 236, 0.025) 51%, transparent 52%);
-            z-index: 1;
-        }
-
-        /* Organic Wave Layer */
-        .wave-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                /* Subtle diagonal waves */
-                radial-gradient(ellipse 300% 40% at 15% 30%, transparent 49%, rgba(109, 212, 236, 0.02) 50%, rgba(109, 212, 236, 0.02) 51%, transparent 52%),
-                radial-gradient(ellipse 350% 45% at 85% 55%, transparent 49%, rgba(109, 212, 236, 0.015) 50%, rgba(109, 212, 236, 0.015) 51%, transparent 52%),
-                radial-gradient(ellipse 280% 35% at 55% 85%, transparent 49%, rgba(255, 255, 255, 0.008) 50%, rgba(255, 255, 255, 0.008) 51%, transparent 52%);
-            z-index: 1;
-        }
-
-        /* Subtle Particles */
-        .hero-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            background: rgba(109, 212, 236, 0.4);
-            border-radius: 50%;
-            opacity: 0.6;
-        }
-
-        .particle:nth-child(1) {
-            top: 25%;
-            left: 15%;
-        }
-
-        .particle:nth-child(2) {
-            top: 60%;
-            left: 75%;
-        }
-
-        .particle:nth-child(3) {
-            top: 80%;
-            left: 35%;
-        }
+        // Remove all old wave CSS and particle CSS that's not needed
+        /* Minimal Particles - Remove completely */
 
         .hero-content {
             position: relative;
@@ -903,23 +841,20 @@
             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
         });
 
-        // Real Eventbrite Events Integration - Debug Version
+        // Real Eventbrite Events Integration - Clean Version
         function loadEventbriteEvents() {
             console.log('🎯 Starting loadEventbriteEvents...');
             
             try {
-                // Your actual published events from Eventbrite
+                // Single test event to debug
                 const realEvents = [
                     {
-                        name: { text: "Expat Entrepreneurs Meetup DXB" },
+                        name: { text: "Test Event" },
                         start: { local: "2024-12-05T18:30:00" },
                         venue: { name: "Dubai Marina", address: { city: "Dubai" } },
-                        description: { text: "Launch, grow & connect in Dubai! Perfect for expat entrepreneurs looking to build networks and grow their businesses in the UAE." },
-                        url: "https://www.eventbrite.co.uk/e/expat-entrepreneurs-meetup-dxb-launch-grow-connect-in-dubai-tickets-1338442711179",
-                        logo: null,
-                        eventType: "entrepreneur",
+                        description: { text: "This is a test event to debug the display issue." },
+                        url: "https://www.eventbrite.co.uk/e/test-event",
                         ticket_availability: { 
-                            minimum_ticket_price: { major_value: 0 }, 
                             total_tickets_available: 25,
                             total_tickets_sold: 12
                         }
@@ -927,15 +862,67 @@
                 ];
                 
                 console.log('✅ Events array created:', realEvents.length);
-                console.log('📊 Sample event:', realEvents[0]);
-                
-                // Display all events
                 displayEvents(realEvents);
-                console.log('✅ displayEvents called');
                 
             } catch (error) {
                 console.error('❌ Error in loadEventbriteEvents:', error);
             }
+        }
+
+        function displayEvents(events) {
+            console.log('📋 Starting displayEvents with', events.length, 'events');
+            
+            const eventsGrid = document.querySelector('.events-grid');
+            
+            if (!eventsGrid) {
+                console.error('❌ Events grid not found!');
+                return;
+            }
+            
+            // Clear existing content
+            eventsGrid.innerHTML = '';
+            
+            events.forEach((event, index) => {
+                console.log(`Creating event ${index + 1}:`, event.name.text);
+                try {
+                    const eventCard = createSimpleEventCard(event);
+                    if (eventCard) {
+                        eventsGrid.appendChild(eventCard);
+                        console.log('✅ Event card added:', event.name.text);
+                    }
+                } catch (error) {
+                    console.error('❌ Error creating card:', error);
+                }
+            });
+            
+            console.log('✅ All events processed');
+        }
+
+        function createSimpleEventCard(event) {
+            console.log('🎟️ Creating simple card for:', event.name.text);
+            
+            const card = document.createElement('div');
+            card.className = 'event-card scroll-fade';
+            
+            const eventTitle = event.name.text;
+            const venueName = event.venue ? event.venue.name : 'Venue TBA';
+            
+            card.innerHTML = `
+                <div class="event-image">
+                    <div class="event-image-fallback">🎉 ${eventTitle}</div>
+                </div>
+                <div class="event-content">
+                    <div class="event-date">Dec 5 • 6:30 PM</div>
+                    <h3 class="event-title">${eventTitle}</h3>
+                    <div class="event-location">📍 ${venueName}</div>
+                    <div class="price-tag">Free Early Bird Available</div>
+                    <p>Test event description...</p>
+                    <a href="${event.url}" target="_blank" class="btn btn-primary" style="margin-top: 1rem;">Get Tickets</a>
+                </div>
+            `;
+
+            console.log('✅ Simple card created for:', eventTitle);
+            return card;
         }
 
         // Enhanced sample events for fallback
