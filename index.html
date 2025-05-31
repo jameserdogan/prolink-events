@@ -834,23 +834,35 @@
         function displayEvents(events) {
             const eventsGrid = document.querySelector('.events-grid');
             
+            if (!eventsGrid) {
+                console.error('❌ Events grid not found!');
+                return;
+            }
+            
             // Clear existing content
             eventsGrid.innerHTML = '';
             
-            // Filter to upcoming events only
-            const upcomingEvents = events.filter(event => {
-                const eventDate = new Date(event.start.local);
-                return eventDate > new Date();
-            }).slice(0, 6); // Show max 6 events
-
-            if (upcomingEvents.length === 0) {
-                showNoEventsMessage();
-                return;
-            }
-
-            upcomingEvents.forEach(event => {
+            console.log('📋 Creating event cards for:', events.length, 'events');
+            
+            events.forEach((event, index) => {
+                console.log(`🎟️ Creating card ${index + 1}:`, event.name.text);
                 const eventCard = createEventCard(event);
                 eventsGrid.appendChild(eventCard);
+            });
+            
+            console.log('✅ All event cards added to grid');
+            
+            // Trigger scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.scroll-fade').forEach(el => {
+                observer.observe(el);
             });
         }
 
