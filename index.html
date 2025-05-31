@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProLink Events - Dubai's Most Fun Networking Events</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #6dd4ec;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #6dd4ec;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" patternUnits="userSpaceOnUse" width="10" height="10"><circle cx="5" cy="5" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #6dd4ec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #6dd4ec;
+            color: #000;
+            box-shadow: 0 10px 30px rgba(109, 212, 236, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #5bc4d9;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(109, 212, 236, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: #1a1a1a;
+            color: white;
+            padding: 4rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            color: #6dd4ec;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* Upcoming Events */
+        .events {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .event-image {
+            height: 200px;
+            background: linear-gradient(45deg, #6dd4ec, #5bc4d9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .event-content {
+            padding: 2rem;
+        }
+
+        .event-date {
+            color: #6dd4ec;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            color: #333;
+        }
+
+        .event-location {
+            color: #666;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .price-tag {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* Community Section */
+        .community {
+            background: linear-gradient(135deg, #000000, #333333);
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .community-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .community h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .community p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            background: #20b358;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+
+        .about-image {
+            height: 400px;
+            background: linear-gradient(45deg, #6dd4ec, #5bc4d9);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #6dd4ec;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: #6dd4ec;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #999;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Scroll animations */
+        .scroll-fade {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">ProLink Events</a>
+            <ul class="nav-links">
+                <li><a href="#events">Events</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu">☰</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="floating-element">🌟</div>
+        <div class="floating-element">🚀</div>
+        <div class="floating-element">💫</div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <h1>Dubai's Most Fun Networking Events</h1>
+                <p class="hero-subtitle">Join hundreds of entrepreneurs, professionals, and newcomers at premium venues across Dubai. Skip the boring hotel lobbies – connect at the coolest bars and lounges in the city.</p>
+                <div class="cta-buttons">
+                    <a href="#events" class="btn btn-primary">View Upcoming Events</a>
+                    <a href="#community" class="btn btn-secondary">Join Our Community</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item scroll-fade">
+                    <h3>500+</h3>
+                    <p>Happy Attendees</p>
+                </div>
+                <div class="stat-item scroll-fade">
+                    <h3>25+</h3>
+                    <p>Events Hosted</p>
+                </div>
+                <div class="stat-item scroll-fade">
+                    <h3>50+</h3>
+                    <p>Premium Venues</p>
+                </div>
+                <div class="stat-item scroll-fade">
+                    <h3>85%</h3>
+                    <p>Return Rate</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events -->
+    <section class="events" id="events">
+        <div class="container">
+            <h2 class="section-title scroll-fade">Upcoming Events</h2>
+            <div class="events-grid">
+                <div class="event-card scroll-fade">
+                    <div class="event-image">
+                        🏢 Entrepreneur Networking Night
+                    </div>
+                    <div class="event-content">
+                        <div class="event-date">Wed, June 5 • 7:00 PM</div>
+                        <h3 class="event-title">Entrepreneur & Real Estate Mixer</h3>
+                        <div class="event-location">📍 Zero Gravity, Dubai Marina</div>
+                        <div class="price-tag">Free Early Bird Available</div>
+                        <p>Connect with fellow entrepreneurs and real estate professionals in Dubai's most stunning waterfront location.</p>
+                        <a href="#" class="btn btn-primary" style="margin-top: 1rem;">Get Tickets on Eventbrite</a>
+                    </div>
+                </div>
+
+                <div class="event-card scroll-fade">
+                    <div class="event-image">
+                        🌐 Social Circle Mixer
+                    </div>
+                    <div class="event-content">
+                        <div class="event-date">Sat, June 8 • 8:00 PM</div>
+                        <h3 class="event-title">Social Circle Saturday</h3>
+                        <div class="event-location">📍 Atmosphere Burj Khalifa</div>
+                        <div class="price-tag">$15 General • $25 Last Call</div>
+                        <p>Meet new friends and expand your social circle at the world's highest lounge. Perfect for newcomers to Dubai!</p>
+                        <a href="#" class="btn btn-primary" style="margin-top: 1rem;">Get Tickets on Eventbrite</a>
+                    </div>
+                </div>
+
+                <div class="event-card scroll-fade">
+                    <div class="event-image">
+                        🤖 AI & Tech Community
+                    </div>
+                    <div class="event-content">
+                        <div class="event-date">Thu, June 12 • 6:30 PM</div>
+                        <h3 class="event-title">AI & Tech Networking</h3>
+                        <div class="event-location">📍 CÉ LA VIE Dubai</div>
+                        <div class="price-tag">Free Early Bird Available</div>
+                        <p>Join Dubai's growing AI and tech community. Share ideas, collaborate, and connect with like-minded innovators.</p>
+                        <a href="#" class="btn btn-primary" style="margin-top: 1rem;">Get Tickets on Eventbrite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community" id="community">
+        <div class="container">
+            <div class="community-content scroll-fade">
+                <h2>Join the ProLink Community</h2>
+                <p>Get exclusive access to event updates, early bird tickets, and connect with Dubai's most ambitious professionals in our private WhatsApp community.</p>
+                <a href="#" class="whatsapp-btn">
+                    📱 Join WhatsApp Community
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text scroll-fade">
+                    <h2>Why ProLink Events?</h2>
+                    <p>Founded in June 2024, ProLink Events was created to solve a simple problem: networking events in Dubai were boring, expensive, and held in stuffy hotel lobbies.</p>
+                    <p>We host our events at the coolest bars and lounges across Dubai, keep prices affordable with free early bird tickets, and focus on creating genuine connections rather than just collecting business cards.</p>
+                    <p>Our attendees don't just show up – they stay long after the event ends because the vibe is that good. That's the ProLink difference.</p>
+                    <a href="#events" class="btn btn-primary">Experience It Yourself</a>
+                </div>
+                <div class="about-image scroll-fade">
+                    <div>James Erdogan<br>Founder & Community Builder</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ProLink Events</h3>
+                    <p>Dubai's premier networking and social events company. Making connections that matter in the world's most connected city.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="#events">Upcoming Events</a></p>
+                    <p><a href="#community">Join Community</a></p>
+                    <p><a href="#about">About Us</a></p>
+                    <p><a href="#">Private Events</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 hello@prolinkevents.ae</p>
+                    <p>📱 WhatsApp Community</p>
+                    <p>📍 Dubai, UAE</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <p><a href="#">Instagram</a></p>
+                    <p><a href="#">LinkedIn</a></p>
+                    <p><a href="#">Twitter</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ProLink Events. All rights reserved. | Bringing Dubai together, one connection at a time.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-fade').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Eventbrite API Configuration
+        const EVENTBRITE_API_KEY = 'GMUXCJ75E66YDK52CI';
+        const ORGANIZATION_ID = '96393734683';
+
+        // Alternative approach using JSONP or server-side proxy
+        async function loadEventbriteEvents() {
+            try {
+                console.log('Loading events from Eventbrite...');
+                
+                // First, let's try to get the user's organization ID
+                const userResponse = await fetch(`https://www.eventbriteapi.com/v3/users/me/?token=${EVENTBRITE_API_KEY}`);
+                
+                if (!userResponse.ok) {
+                    console.log('Direct API blocked by CORS. Loading sample events...');
+                    loadSampleEvents();
+                    return;
+                }
+
+                const userData = await userResponse.json();
+                console.log('User data:', userData);
+                
+                // Try getting events using the user approach
+                const eventsResponse = await fetch(`https://www.eventbriteapi.com/v3/organizations/${ORGANIZATION_ID}/events/?status=live&order_by=start_asc&expand=venue,ticket_availability&token=${EVENTBRITE_API_KEY}`);
+                
+                if (!eventsResponse.ok) {
+                    throw new Error(`API Error: ${eventsResponse.status}`);
+                }
+
+                const data = await eventsResponse.json();
+                console.log('Events loaded:', data.events?.length || 0);
+                
+                if (data.events && data.events.length > 0) {
+                    displayEvents(data.events);
+                } else {
+                    loadSampleEvents();
+                }
+                
+            } catch (error) {
+                console.error('Error loading events:', error);
+                console.log('Loading sample events due to CORS restrictions...');
+                loadSampleEvents();
+            }
+        }
+
+        // Fallback sample events (will replace with real data once CORS is resolved)
+        function loadSampleEvents() {
+            const sampleEvents = [
+                {
+                    name: { text: "Entrepreneur & Real Estate Networking Night" },
+                    start: { local: "2024-06-15T19:00:00" },
+                    venue: { name: "Zero Gravity", address: { city: "Dubai Marina" } },
+                    description: { text: "Connect with fellow entrepreneurs and real estate professionals in Dubai's most stunning waterfront location. Network, share ideas, and build meaningful business relationships." },
+                    url: "https://www.eventbrite.com/e/your-event-link",
+                    ticket_availability: { minimum_ticket_price: { major_value: 0 }, total_tickets_available: 15 }
+                },
+                {
+                    name: { text: "AI & Tech Community Mixer" },
+                    start: { local: "2024-06-18T18:30:00" },
+                    venue: { name: "CÉ LA VIE Dubai", address: { city: "Business Bay" } },
+                    description: { text: "Join Dubai's growing AI and tech community. Share ideas, collaborate, and connect with like-minded innovators shaping the future of technology." },
+                    url: "https://www.eventbrite.com/e/your-event-link",
+                    ticket_availability: { minimum_ticket_price: { major_value: 0 }, total_tickets_available: 25 }
+                },
+                {
+                    name: { text: "Social Circle Saturday" },
+                    start: { local: "2024-06-22T20:00:00" },
+                    venue: { name: "Atmosphere Burj Khalifa", address: { city: "Downtown Dubai" } },
+                    description: { text: "Meet new friends and expand your social circle at the world's highest lounge. Perfect for newcomers to Dubai and anyone looking to connect!" },
+                    url: "https://www.eventbrite.com/e/your-event-link",
+                    ticket_availability: { minimum_ticket_price: { major_value: 15 }, total_tickets_available: 8 }
+                }
+            ];
+            
+            displayEvents(sampleEvents);
+            
+            // Show a note about live integration
+            const eventsSection = document.querySelector('.events');
+            const note = document.createElement('div');
+            note.style.textAlign = 'center';
+            note.style.marginTop = '2rem';
+            note.style.padding = '1rem';
+            note.style.background = 'rgba(109, 212, 236, 0.1)';
+            note.style.borderRadius = '10px';
+            note.innerHTML = `
+                <p style="color: #6dd4ec; font-weight: 600;">🔄 Connecting to live Eventbrite data...</p>
+                <p style="color: #666; font-size: 0.9rem;">Due to browser security, we're setting up a server connection for real-time event updates.</p>
+            `;
+            eventsSection.appendChild(note);
+        }
+
+        function displayEvents(events) {
+            const eventsGrid = document.querySelector('.events-grid');
+            
+            // Clear existing content
+            eventsGrid.innerHTML = '';
+            
+            // Filter to upcoming events only
+            const upcomingEvents = events.filter(event => {
+                const eventDate = new Date(event.start.local);
+                return eventDate > new Date();
+            }).slice(0, 6); // Show max 6 events
+
+            if (upcomingEvents.length === 0) {
+                showNoEventsMessage();
+                return;
+            }
+
+            upcomingEvents.forEach(event => {
+                const eventCard = createEventCard(event);
+                eventsGrid.appendChild(eventCard);
+            });
+        }
+
+        function createEventCard(event) {
+            const card = document.createElement('div');
+            card.className = 'event-card scroll-fade';
+            
+            // Format date
+            const eventDate = new Date(event.start.local);
+            const formattedDate = eventDate.toLocaleDateString('en-US', {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric'
+            });
+            const formattedTime = eventDate.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            // Get venue info
+            const venueName = event.venue ? event.venue.name : 'Venue TBA';
+            const venueAddress = event.venue ? `${event.venue.address.city}` : '';
+
+            // Determine event type and emoji
+            const eventTitle = event.name.text;
+            let eventEmoji = '🌐';
+            if (eventTitle.toLowerCase().includes('entrepreneur') || eventTitle.toLowerCase().includes('business')) {
+                eventEmoji = '🏢';
+            } else if (eventTitle.toLowerCase().includes('ai') || eventTitle.toLowerCase().includes('tech')) {
+                eventEmoji = '🤖';
+            } else if (eventTitle.toLowerCase().includes('social') || eventTitle.toLowerCase().includes('mixer')) {
+                eventEmoji = '🌐';
+            } else if (eventTitle.toLowerCase().includes('real estate')) {
+                eventEmoji = '🏢';
+            }
+
+            // Get ticket info
+            let priceDisplay = 'Free Early Bird Available';
+            if (event.ticket_availability && event.ticket_availability.minimum_ticket_price) {
+                const minPrice = event.ticket_availability.minimum_ticket_price.major_value;
+                if (minPrice > 0) {
+                    priceDisplay = `From ${minPrice}`;
+                }
+            }
+
+            // Check if event is sold out or low capacity
+            let availabilityText = '';
+            if (event.ticket_availability) {
+                const available = event.ticket_availability.total_tickets_available;
+                const sold = event.ticket_availability.total_tickets_sold;
+                
+                if (available === 0) {
+                    availabilityText = '<div style="color: #e74c3c; font-weight: 600; margin-top: 0.5rem;">🔥 SOLD OUT</div>';
+                    priceDisplay = 'Sold Out';
+                } else if (available <= 10 && available > 0) {
+                    availabilityText = `<div style="color: #f39c12; font-weight: 600; margin-top: 0.5rem;">⚡ Only ${available} spots left!</div>`;
+                }
+            }
+
+            card.innerHTML = `
+                <div class="event-image">
+                    ${eventEmoji} ${eventTitle}
+                </div>
+                <div class="event-content">
+                    <div class="event-date">${formattedDate} • ${formattedTime}</div>
+                    <h3 class="event-title">${eventTitle}</h3>
+                    <div class="event-location">📍 ${venueName}${venueAddress ? ', ' + venueAddress : ''}</div>
+                    <div class="price-tag">${priceDisplay}</div>
+                    <p>${event.description.text.substring(0, 120)}...</p>
+                    ${availabilityText}
+                    <a href="${event.url}" target="_blank" class="btn btn-primary" style="margin-top: 1rem;">
+                        ${event.ticket_availability && event.ticket_availability.total_tickets_available === 0 ? 'Join Waitlist' : 'Get Tickets'}
+                    </a>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function showNoEventsMessage() {
+            const eventsGrid = document.querySelector('.events-grid');
+            eventsGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                    <h3 style="color: #666; margin-bottom: 1rem;">🚀 Amazing Events Coming Soon!</h3>
+                    <p style="color: #999;">New events are being planned. Join our WhatsApp community to be the first to know!</p>
+                    <a href="#community" class="btn btn-primary" style="margin-top: 1rem;">Join Community</a>
+                </div>
+            `;
+        }
+
+        function showErrorMessage() {
+            const eventsGrid = document.querySelector('.events-grid');
+            eventsGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                    <h3 style="color: #666; margin-bottom: 1rem;">📱 Check Our Latest Events</h3>
+                    <p style="color: #999;">Having trouble loading events? Check our WhatsApp community for the latest updates!</p>
+                    <a href="#community" class="btn btn-primary" style="margin-top: 1rem;">Join Community</a>
+                </div>
+            `;
+        }
+
+        // WhatsApp community link handler
+        document.querySelector('.whatsapp-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Replace with your actual WhatsApp group link
+            window.open('https://chat.whatsapp.com/YOUR_GROUP_LINK', '_blank');
+        });
+
+        // Eventbrite ticket links handler - now handled by API
+        // Events automatically link to Eventbrite checkout
+
+        // Initialize
+        loadEventbriteEvents();
+    </script>
+</body>
+</html>

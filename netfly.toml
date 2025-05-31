@@ -1,0 +1,32 @@
+# netlify.toml
+# Configuration file for Netlify deployment
+
+[build]
+  # Directory to publish (where your HTML file is)
+  publish = "."
+  
+  # Build command (not needed for static sites)
+  command = ""
+
+[functions]
+  # Directory where serverless functions are located
+  directory = "netlify/functions"
+
+# Redirect rules for clean URLs
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Environment variables for production (set these in Netlify dashboard)
+# EVENTBRITE_API_KEY = "your_api_key_here"
+# ORGANIZATION_ID = "96393734683"
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

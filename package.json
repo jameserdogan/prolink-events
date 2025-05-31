@@ -1,0 +1,26 @@
+{
+  "name": "prolink-events-website",
+  "version": "1.0.0",
+  "description": "ProLink Events - Dubai's most fun networking events",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step needed for static site'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "keywords": [
+    "networking",
+    "events",
+    "dubai",
+    "eventbrite",
+    "social"
+  ],
+  "author": "James Erdogan - ProLink Events",
+  "license": "MIT"
+}
