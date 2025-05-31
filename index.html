@@ -76,7 +76,7 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            background: #000000;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -84,143 +84,69 @@
             overflow: hidden;
         }
 
-        /* Dynamic Wave Background */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%);
-            z-index: 1;
-        }
-
-        .hero::after {
-            content: '';
+        /* Additional Static Wave Layers */
+        .flowing-lines {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background-image: 
-                radial-gradient(circle at 20% 80%, rgba(109, 212, 236, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(109, 212, 236, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(109, 212, 236, 0.05) 0%, transparent 50%);
-            animation: waveAnimation 20s ease-in-out infinite;
+                /* Curved wave lines */
+                radial-gradient(ellipse 250% 30% at 45% 25%, transparent 49%, rgba(109, 212, 236, 0.04) 50%, rgba(109, 212, 236, 0.04) 51%, transparent 52%),
+                radial-gradient(ellipse 220% 35% at 75% 45%, transparent 49%, rgba(109, 212, 236, 0.03) 50%, rgba(109, 212, 236, 0.03) 51%, transparent 52%),
+                radial-gradient(ellipse 280% 25% at 25% 70%, transparent 49%, rgba(109, 212, 236, 0.025) 50%, rgba(109, 212, 236, 0.025) 51%, transparent 52%);
             z-index: 1;
         }
 
-        /* Wave Animation */
-        @keyframes waveAnimation {
-            0%, 100% {
-                transform: translateX(0) translateY(0) scale(1);
-                opacity: 1;
-            }
-            25% {
-                transform: translateX(-10px) translateY(-20px) scale(1.05);
-                opacity: 0.8;
-            }
-            50% {
-                transform: translateX(10px) translateY(-10px) scale(0.95);
-                opacity: 1;
-            }
-            75% {
-                transform: translateX(-5px) translateY(15px) scale(1.02);
-                opacity: 0.9;
-            }
+        /* Organic Wave Layer */
+        .wave-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                /* Subtle diagonal waves */
+                radial-gradient(ellipse 300% 40% at 15% 30%, transparent 49%, rgba(109, 212, 236, 0.02) 50%, rgba(109, 212, 236, 0.02) 51%, transparent 52%),
+                radial-gradient(ellipse 350% 45% at 85% 55%, transparent 49%, rgba(109, 212, 236, 0.015) 50%, rgba(109, 212, 236, 0.015) 51%, transparent 52%),
+                radial-gradient(ellipse 280% 35% at 55% 85%, transparent 49%, rgba(255, 255, 255, 0.008) 50%, rgba(255, 255, 255, 0.008) 51%, transparent 52%);
+            z-index: 1;
         }
 
-        /* Flowing Particles */
+        /* Subtle Particles */
         .hero-particles {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
         }
 
         .particle {
             position: absolute;
-            background: rgba(109, 212, 236, 0.3);
+            width: 1px;
+            height: 1px;
+            background: rgba(109, 212, 236, 0.4);
             border-radius: 50%;
-            animation: floatParticle 15s infinite ease-in-out;
+            opacity: 0.6;
         }
 
         .particle:nth-child(1) {
-            width: 4px;
-            height: 4px;
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-            animation-duration: 20s;
+            top: 25%;
+            left: 15%;
         }
 
         .particle:nth-child(2) {
-            width: 6px;
-            height: 6px;
-            top: 40%;
-            left: 70%;
-            animation-delay: 3s;
-            animation-duration: 25s;
+            top: 60%;
+            left: 75%;
         }
 
         .particle:nth-child(3) {
-            width: 3px;
-            height: 3px;
-            top: 60%;
-            left: 30%;
-            animation-delay: 6s;
-            animation-duration: 18s;
-        }
-
-        .particle:nth-child(4) {
-            width: 5px;
-            height: 5px;
             top: 80%;
-            left: 60%;
-            animation-delay: 9s;
-            animation-duration: 22s;
-        }
-
-        .particle:nth-child(5) {
-            width: 2px;
-            height: 2px;
-            top: 15%;
-            left: 85%;
-            animation-delay: 12s;
-            animation-duration: 16s;
-        }
-
-        @keyframes floatParticle {
-            0%, 100% {
-                transform: translateY(0px) translateX(0px) scale(1);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            20% {
-                transform: translateY(-20px) translateX(10px) scale(1.1);
-                opacity: 0.8;
-            }
-            40% {
-                transform: translateY(-40px) translateX(-5px) scale(0.9);
-                opacity: 1;
-            }
-            60% {
-                transform: translateY(-60px) translateX(15px) scale(1.2);
-                opacity: 0.6;
-            }
-            80% {
-                transform: translateY(-80px) translateX(-10px) scale(0.8);
-                opacity: 0.3;
-            }
-            90% {
-                opacity: 0;
-            }
+            left: 35%;
         }
 
         .hero-content {
@@ -384,6 +310,28 @@
             color: #000;
             font-size: 1.2rem;
             font-weight: 600;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .event-image-fallback {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #6dd4ec, #5bc4d9);
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
         .event-content {
@@ -421,6 +369,140 @@
             font-weight: 600;
             display: inline-block;
             margin-bottom: 1rem;
+        }
+
+        /* Enhanced Ticket Display System */
+        .urgency-banner {
+            background: linear-gradient(45deg, #ff6b35, #e55a2b);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .ticket-tiers {
+            margin-bottom: 1rem;
+        }
+
+        .ticket-tier {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .ticket-tier:last-child {
+            margin-bottom: 0;
+        }
+
+        .tier-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tier-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .tier-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #6dd4ec;
+        }
+
+        .tier-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+        }
+
+        /* Ticket Tier Status Styles */
+        .tier-available {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: #4CAF50;
+        }
+
+        .tier-available .tier-status {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .tier-low {
+            background: rgba(255, 193, 7, 0.1);
+            border-color: #FFC107;
+        }
+
+        .tier-low .tier-status {
+            background: #FFC107;
+            color: #333;
+        }
+
+        .tier-urgent {
+            background: rgba(255, 107, 53, 0.1);
+            border-color: #ff6b35;
+        }
+
+        .tier-urgent .tier-status {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .tier-sold-out {
+            background: rgba(158, 158, 158, 0.1);
+            border-color: #9e9e9e;
+            opacity: 0.7;
+        }
+
+        .tier-sold-out .tier-status {
+            background: #9e9e9e;
+            color: white;
+        }
+
+        .tier-sold-out .tier-name,
+        .tier-sold-out .tier-price {
+            color: #9e9e9e;
+            text-decoration: line-through;
+        }
+
+        .ticket-status {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .ticket-status.sold-out {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+        }
+
+        .status-badge {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e74c3c;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .ticket-details {
+            font-size: 0.9rem;
+            color: #666;
         }
 
         /* Community Section */
@@ -629,15 +711,6 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <!-- Dynamic Particles -->
-        <div class="hero-particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-        </div>
-        
         <div class="container">
             <div class="hero-content">
                 <h1>Dubai's Most Fun Networking Events</h1>
@@ -830,95 +903,39 @@
             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
         });
 
-        // Real Eventbrite Events Integration using Widgets
+        // Real Eventbrite Events Integration - Debug Version
         function loadEventbriteEvents() {
-            console.log('🎯 Loading real ProLink events...');
+            console.log('🎯 Starting loadEventbriteEvents...');
             
-            // Your actual published events from Eventbrite
-            const realEvents = [
-                {
-                    name: { text: "Expat Entrepreneurs Meetup DXB" },
-                    start: { local: "2024-12-05T18:30:00" },
-                    venue: { name: "Dubai Marina", address: { city: "Dubai" } },
-                    description: { text: "Launch, grow & connect in Dubai! Perfect for expat entrepreneurs looking to build networks and grow their businesses in the UAE." },
-                    url: "https://www.eventbrite.co.uk/e/expat-entrepreneurs-meetup-dxb-launch-grow-connect-in-dubai-tickets-1338442711179",
-                    eventType: "entrepreneur",
-                    ticket_availability: { 
-                        minimum_ticket_price: { major_value: 0 }, 
-                        total_tickets_available: 25,
-                        total_tickets_sold: 12
+            try {
+                // Your actual published events from Eventbrite
+                const realEvents = [
+                    {
+                        name: { text: "Expat Entrepreneurs Meetup DXB" },
+                        start: { local: "2024-12-05T18:30:00" },
+                        venue: { name: "Dubai Marina", address: { city: "Dubai" } },
+                        description: { text: "Launch, grow & connect in Dubai! Perfect for expat entrepreneurs looking to build networks and grow their businesses in the UAE." },
+                        url: "https://www.eventbrite.co.uk/e/expat-entrepreneurs-meetup-dxb-launch-grow-connect-in-dubai-tickets-1338442711179",
+                        logo: null,
+                        eventType: "entrepreneur",
+                        ticket_availability: { 
+                            minimum_ticket_price: { major_value: 0 }, 
+                            total_tickets_available: 25,
+                            total_tickets_sold: 12
+                        }
                     }
-                },
-                {
-                    name: { text: "Real Estate Networking Event DXB" },
-                    start: { local: "2024-12-08T19:00:00" },
-                    venue: { name: "Business Bay", address: { city: "Dubai" } },
-                    description: { text: "Connect with real estate professionals, investors, and industry leaders. Perfect for agents, developers, and property enthusiasts." },
-                    url: "https://www.eventbrite.co.uk/e/real-estate-networking-event-dxb-tickets-1376583421069",
-                    eventType: "realestate",
-                    ticket_availability: { 
-                        minimum_ticket_price: { major_value: 15 }, 
-                        total_tickets_available: 30,
-                        total_tickets_sold: 18
-                    }
-                },
-                {
-                    name: { text: "AI & Tech Networking Night DXB" },
-                    start: { local: "2024-12-10T18:30:00" },
-                    venue: { name: "DIFC", address: { city: "Dubai" } },
-                    description: { text: "Meet founders, engineers & innovators! Join Dubai's growing AI and tech community for networking, collaboration, and innovation." },
-                    url: "https://www.eventbrite.co.uk/e/ai-tech-networking-night-dxb-meet-founders-engineers-innovators-tickets-1338309432539",
-                    eventType: "tech",
-                    ticket_availability: { 
-                        minimum_ticket_price: { major_value: 0 }, 
-                        total_tickets_available: 40,
-                        total_tickets_sold: 32
-                    }
-                },
-                {
-                    name: { text: "Social Circle DXB" },
-                    start: { local: "2024-12-12T20:00:00" },
-                    venue: { name: "JBR", address: { city: "Dubai" } },
-                    description: { text: "Meet new people & make friends! Perfect for newcomers to Dubai and anyone looking to expand their social circle in the city." },
-                    url: "https://www.eventbrite.co.uk/e/social-circle-dxb-meet-new-people-make-friends-tickets-1376693680859",
-                    eventType: "social",
-                    ticket_availability: { 
-                        minimum_ticket_price: { major_value: 20 }, 
-                        total_tickets_available: 35,
-                        total_tickets_sold: 28
-                    }
-                },
-                {
-                    name: { text: "Build Smart - AI Chatbots Workshop" },
-                    start: { local: "2024-12-15T14:00:00" },
-                    venue: { name: "Dubai Internet City", address: { city: "Dubai" } },
-                    description: { text: "Learn how to build AI chatbots & agents! Hands-on workshop for entrepreneurs and tech enthusiasts wanting to leverage AI." },
-                    url: "https://www.eventbrite.co.uk/e/build-smart-learn-how-to-build-ai-chatbots-agents-tickets-1343683195609",
-                    eventType: "workshop",
-                    ticket_availability: { 
-                        minimum_ticket_price: { major_value: 25 }, 
-                        total_tickets_available: 20,
-                        total_tickets_sold: 15
-                    }
-                },
-                {
-                    name: { text: "Divorced & Dating DXB Speed Dating" },
-                    start: { local: "2024-12-18T19:30:00" },
-                    venue: { name: "City Walk", address: { city: "Dubai" } },
-                    description: { text: "Speed dating night for Dubai's divorced and dating community. Meet like-minded singles in a fun, relaxed environment." },
-                    url: "https://www.eventbrite.co.uk/e/divorced-dating-dxb-speed-dating-night-tickets-1349748707719",
-                    eventType: "dating",
-                    ticket_availability: { 
-                        minimum_ticket_price: { major_value: 30 }, 
-                        total_tickets_available: 24,
-                        total_tickets_sold: 20
-                    }
-                }
-            ];
-            
-            // Display all events
-            console.log('✅ Displaying real ProLink events:', realEvents.length);
-            displayEvents(realEvents);
+                ];
+                
+                console.log('✅ Events array created:', realEvents.length);
+                console.log('📊 Sample event:', realEvents[0]);
+                
+                // Display all events
+                displayEvents(realEvents);
+                console.log('✅ displayEvents called');
+                
+            } catch (error) {
+                console.error('❌ Error in loadEventbriteEvents:', error);
+            }
         }
 
         // Enhanced sample events for fallback
@@ -1065,9 +1082,9 @@
                     <div class="event-date">${formattedDate} • ${formattedTime}</div>
                     <h3 class="event-title">${eventTitle}</h3>
                     <div class="event-location">📍 ${venueName}${venueAddress ? ', ' + venueAddress : ''}</div>
-                    <div class="price-tag">${priceDisplay}</div>
+                    ${urgencyMessage}
+                    ${ticketInfo}
                     <p>${event.description.text.substring(0, 120)}...</p>
-                    ${availabilityText}
                     <a href="${event.url}" target="_blank" class="btn btn-primary" style="margin-top: 1rem;">
                         ${event.ticket_availability && event.ticket_availability.total_tickets_available === 0 ? 'Join Waitlist' : 'Get Tickets'}
                     </a>
