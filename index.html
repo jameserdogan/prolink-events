@@ -782,35 +782,9 @@
                 }
             ];
             
-            // Filter to show only upcoming events (next 6)
-            const upcomingEvents = realEvents.slice(0, 6);
-            
-            console.log('✅ Displaying real ProLink events:', upcomingEvents.length);
-            displayEvents(upcomingEvents);
-            
-            // Add success indicator
-            const eventsSection = document.querySelector('.events');
-            const successNote = document.createElement('div');
-            successNote.style.cssText = `
-                text-align: center; margin-top: 2rem; padding: 1.5rem;
-                background: linear-gradient(135deg, rgba(109, 212, 236, 0.1), rgba(109, 212, 236, 0.05));
-                border-radius: 15px; border: 2px solid rgba(109, 212, 236, 0.3);
-            `;
-            successNote.innerHTML = `
-                <h3 style="color: #6dd4ec; margin-bottom: 1rem;">🎉 Live Events from Eventbrite!</h3>
-                <p style="color: #333; margin-bottom: 1rem;">All events are live and connected to Eventbrite for real ticket sales.</p>
-                <div style="background: white; padding: 1rem; border-radius: 10px; margin: 1rem 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <strong style="color: #6dd4ec;">✨ What's Working:</strong><br>
-                    ✅ Real events from your Eventbrite account<br>
-                    ✅ Direct ticket purchasing<br>
-                    ✅ Live event updates<br>
-                    ✅ Professional presentation
-                </div>
-                <p style="color: #666; font-size: 0.9rem;">
-                    <strong>ProLink Events is now live!</strong> Share this link to start driving ticket sales.
-                </p>
-            `;
-            eventsSection.appendChild(successNote);
+            // Display all events
+            console.log('✅ Displaying real ProLink events:', realEvents.length);
+            displayEvents(realEvents);
         }
 
         // Enhanced sample events for fallback
