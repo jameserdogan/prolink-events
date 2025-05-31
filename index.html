@@ -696,10 +696,10 @@
             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
         });
 
-        // Use our serverless function endpoint for API calls
+        // Use our serverless function endpoint for API calls with enhanced debugging
         async function loadEventbriteEvents() {
             try {
-                console.log('Loading events from Eventbrite via proxy...');
+                console.log('🚀 Loading events from Eventbrite via proxy...');
                 
                 // Call our serverless function that handles the API request
                 const response = await fetch('/.netlify/functions/eventbrite-events', {
@@ -709,26 +709,71 @@
                     }
                 });
 
+                console.log('📡 Response status:', response.status);
                 const data = await response.json();
-                console.log('Events loaded via proxy:', data.events?.length || 0);
+                console.log('📊 Full API response:', data);
+                console.log('🎉 Events loaded via proxy:', data.events?.length || 0);
                 
+                // Enhanced logging for debugging
                 if (data.events && data.events.length > 0) {
+                    console.log('✅ SUCCESS! Found events:', data.events.map(e => e.name.text));
                     displayEvents(data.events);
-                    return; // Don't fall back if we have events
+                    
+                    // Add success indicator
+                    const eventsSection = document.querySelector('.events');
+                    const successNote = document.createElement('div');
+                    successNote.style.cssText = `
+                        position: fixed; top: 20px; right: 20px; z-index: 9999;
+                        background: #4CAF50; color: white; padding: 10px 20px;
+                        border-radius: 25px; font-weight: bold;
+                        animation: fadeIn 0.5s ease-in;
+                    `;
+                    successNote.innerHTML = `✅ Live Eventbrite Connected! (${data.events.length} events)`;
+                    document.body.appendChild(successNote);
+                    
+                    // Remove after 5 seconds
+                    setTimeout(() => successNote.remove(), 5000);
+                    
+                    return; // IMPORTANT: Don't fall back if we have events
                 }
                 
-                // Only show "no events" if we actually have no events
+                console.log('⚠️ No events found or empty response');
+                
+                // Only show "no events" if we actually have no events but successful response
                 if (response.ok && data.events && data.events.length === 0) {
+                    console.log('📭 API successful but no events found');
                     showNoEventsMessage();
                 } else {
-                    // If there's an API error, show sample events
+                    console.log('❌ API error, showing sample events');
                     loadSampleEvents();
                 }
                 
             } catch (error) {
-                console.error('Error loading events via proxy:', error);
+                console.error('🔥 Critical error loading events via proxy:', error);
                 loadSampleEvents();
             }
+        }
+
+        // Enhanced sample events for better debugging
+        function loadSampleEvents() {
+            console.log('🎭 Loading sample events as fallback');
+            
+            const sampleEvents = [
+                {
+                    name: { text: "Entrepreneur & Real Estate Networking Night" },
+                    start: { local: "2024-12-15T19:00:00" },
+                    venue: { name: "Zero Gravity", address: { city: "Dubai Marina" } },
+                    description: { text: "Connect with fellow entrepreneurs and real estate professionals in Dubai's most stunning waterfront location." },
+                    url: "https://www.eventbrite.com/e/entrepreneur-real-estate-networking-night-tickets-123456789",
+                    ticket_availability: { 
+                        minimum_ticket_price: { major_value: 0 }, 
+                        total_tickets_available: 15,
+                        total_tickets_sold: 35
+                    }
+                }
+            ];
+            
+            displayEvents(sampleEvents);
         }
 
         // Enhanced sample events for fallback
