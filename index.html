@@ -885,16 +885,12 @@
         </div>
     </section>
 
-    <!-- Upcoming Events -->
+    <!-- Upcoming Events - NO HARDCODED CARDS -->
     <section class="events" id="events">
         <div class="container">
             <h2 class="section-title scroll-fade">Upcoming Events</h2>
             <div class="events-grid">
-                <!-- Events will be loaded dynamically via JavaScript -->
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
-                    <div class="loading"></div>
-                    <p style="margin-top: 1rem; color: #666;">Loading amazing events...</p>
-                </div>
+                <!-- ALL EVENTS LOADED DYNAMICALLY - NO HARDCODED CONTENT -->
             </div>
         </div>
     </section>
@@ -938,6 +934,10 @@
                 <div class="contact-form scroll-fade">
                     <h3>Send us a message</h3>
                     <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" required>
@@ -1152,9 +1152,9 @@
             }, 2000);
         });
 
-        // Real Eventbrite Events Integration
+        // CLEAN EVENT LOADING - NO HARDCODED CONTENT
         async function loadEventbriteEvents() {
-            console.log('🎯 Loading ProLink events...');
+            console.log('🎯 Loading ProLink events with correct pricing...');
             
             try {
                 // Real events data with current 2025 dates
@@ -1302,7 +1302,7 @@
                 return;
             }
             
-            // Clear loading content
+            // Clear all content first
             eventsGrid.innerHTML = '';
             
             if (events.length === 0) {
@@ -1310,14 +1310,14 @@
                 return;
             }
             
-            console.log('📋 Creating event cards for:', events.length, 'events');
+            console.log('📋 Creating event cards with "Tickets Available" text...');
             
             events.forEach((event, index) => {
                 const eventCard = createEventCard(event);
                 eventsGrid.appendChild(eventCard);
             });
             
-            console.log('✅ All event cards added to grid');
+            console.log('✅ All event cards added with correct pricing');
             
             // Re-observe new elements for scroll animations
             document.querySelectorAll('.event-card.scroll-fade').forEach(el => {
@@ -1374,42 +1374,33 @@
                 eventColor = '#2ecc71';
             }
 
-            // Get ticket info
-            let priceDisplay = 'Free Early Bird Available';
+            // SIMPLIFIED PRICING - ALWAYS "TICKETS AVAILABLE" UNLESS SPECIFIED OTHERWISE
+            let priceDisplay = 'Tickets Available';
             let priceClass = 'price-tag';
-            
-            if (event.ticket_availability && event.ticket_availability.minimum_ticket_price) {
-                const minPrice = event.ticket_availability.minimum_ticket_price.major_value;
-                if (minPrice > 0) {
-                    priceDisplay = `From ${minPrice}`;
-                }
-            }
-
-            // Check availability - only change display for sold out or past events
             let availabilityText = '';
             let ticketText = 'Get Tickets';
             
+            // Only change if sold out or past event
             if (event.ticket_availability) {
                 const available = event.ticket_availability.total_tickets_available;
                 const sold = event.ticket_availability.total_tickets_sold;
                 
                 if (available === 0 || sold >= (available + sold)) {
-                    availabilityText = '<div style="color: #e74c3c; font-weight: 600; margin-top: 0.5rem;">🔥 SOLD OUT</div>';
                     priceDisplay = 'Sold Out';
                     priceClass = 'price-tag sold-out-tag';
                     ticketText = 'Join Waitlist';
+                    availabilityText = '<div style="color: #e74c3c; font-weight: 600; margin-top: 0.5rem;">🔥 SOLD OUT</div>';
                 } else if (available <= 10 && available > 0) {
-                    availabilityText = `<div style="color: #f39c12; font-weight: 600; margin-top: 0.5rem;">⚡ Only ${available} spots left!</div>`;
                     priceClass = 'price-tag limited-tag';
-                    // Keep priceDisplay as "Tickets Available"
+                    availabilityText = `<div style="color: #f39c12; font-weight: 600; margin-top: 0.5rem;">⚡ Only ${available} spots left!</div>`;
                 }
             }
-
+            
             // Check if event is in the past
             if (!isUpcoming) {
-                availabilityText = '<div style="color: #95a5a6; font-weight: 600; margin-top: 0.5rem;">📅 Event Completed</div>';
                 priceDisplay = 'Event Completed';
                 ticketText = 'View Photos';
+                availabilityText = '<div style="color: #95a5a6; font-weight: 600; margin-top: 0.5rem;">📅 Event Completed</div>';
             }
 
             card.innerHTML = `
@@ -1443,35 +1434,27 @@
             `;
         }
 
-        // Force refresh of events display
-        function forceRefreshEvents() {
-            console.log('🔄 Force refreshing events...');
+        // Initialize and load events immediately
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎉 ProLink Events website loading...');
+            
+            // Immediately clear any cached content and load fresh events
             const eventsGrid = document.querySelector('.events-grid');
             if (eventsGrid) {
                 eventsGrid.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
                         <div class="loading"></div>
-                        <p style="margin-top: 1rem; color: #666;">Loading events with correct pricing...</p>
+                        <p style="margin-top: 1rem; color: #666;">Loading events...</p>
                     </div>
                 `;
-                
-                // Wait a moment then load events
-                setTimeout(() => {
-                    loadEventbriteEvents();
-                }, 1000);
             }
-        }
-
-        // Initialize everything and force refresh
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🎉 ProLink Events website loaded!');
             
-            // Force a complete refresh of events
+            // Load events after a brief moment
             setTimeout(() => {
-                forceRefreshEvents();
-            }, 500);
+                loadEventbriteEvents();
+            }, 1000);
             
-            // Add some loading delay for better UX
+            // Initialize scroll animations
             setTimeout(() => {
                 document.querySelectorAll('.scroll-fade').forEach(el => {
                     if (el.getBoundingClientRect().top < window.innerHeight) {
@@ -1499,8 +1482,4 @@
         });
     </script>
 </body>
-</html> for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label
+</html>
