@@ -1073,95 +1073,49 @@
             }, 3000);
         }
 
-        // CLEAN EVENT LOADING - NO HARDCODED CONTENT
+        // EVENTBRITE API INTEGRATION - LOADS EVENTS AUTOMATICALLY
         async function loadEventbriteEvents() {
-            console.log('🎯 Loading ProLink events with correct pricing...');
+            console.log('🎯 Loading ProLink events from Eventbrite API...');
             
             try {
-                // Real events data with current 2025 dates
-                const realEvents = [
-                    {
-                        name: { text: "Expat Entrepreneurs Meetup DXB" },
-                        start: { local: "2025-06-05T18:30:00" },
-                        venue: { name: "Lock, Stock & Barrel", address: { city: "JBR" } },
-                        description: { text: "Launch, grow & connect in Dubai! Perfect for expat entrepreneurs looking to build networks and grow their businesses in the UAE." },
-                        url: "https://www.eventbrite.co.uk/e/expat-entrepreneurs-meetup-dxb-launch-grow-connect-in-dubai-tickets-1338442711179",
-                        eventType: "entrepreneur",
-                        ticket_availability: { 
-                            minimum_ticket_price: { major_value: 0 }, 
-                            total_tickets_available: 25,
-                            total_tickets_sold: 12
-                        }
-                    },
-                    {
-                        name: { text: "Real Estate Networking Event DXB" },
-                        start: { local: "2025-06-08T19:00:00" },
-                        venue: { name: "Lock, Stock & Barrel", address: { city: "JBR" } },
-                        description: { text: "Connect with real estate professionals, investors, and industry leaders. Perfect for agents, developers, and property enthusiasts." },
-                        url: "https://www.eventbrite.co.uk/e/real-estate-networking-event-dxb-tickets-1376583421069",
-                        eventType: "realestate",
-                        ticket_availability: { 
-                            minimum_ticket_price: { major_value: 15 }, 
-                            total_tickets_available: 30,
-                            total_tickets_sold: 18
-                        }
-                    },
-                    {
-                        name: { text: "AI & Tech Networking Night DXB" },
-                        start: { local: "2025-06-12T18:30:00" },
-                        venue: { name: "Lock, Stock & Barrel", address: { city: "JBR" } },
-                        description: { text: "Meet founders, engineers & innovators! Join Dubai's growing AI and tech community for networking, collaboration, and innovation." },
-                        url: "https://www.eventbrite.co.uk/e/ai-tech-networking-night-dxb-meet-founders-engineers-innovators-tickets-1338309432539",
-                        eventType: "tech",
-                        ticket_availability: { 
-                            minimum_ticket_price: { major_value: 0 }, 
-                            total_tickets_available: 40,
-                            total_tickets_sold: 32
-                        }
-                    },
-                    {
-                        name: { text: "Social Circle DXB" },
-                        start: { local: "2025-06-15T20:00:00" },
-                        venue: { name: "Lock, Stock & Barrel", address: { city: "JBR" } },
-                        description: { text: "Meet new people & make friends! Perfect for newcomers to Dubai and anyone looking to expand their social circle in the city." },
-                        url: "https://www.eventbrite.co.uk/e/social-circle-dxb-meet-new-people-make-friends-tickets-1376693680859",
-                        eventType: "social",
-                        ticket_availability: { 
-                            minimum_ticket_price: { major_value: 20 }, 
-                            total_tickets_available: 35,
-                            total_tickets_sold: 28
-                        }
-                    },
-                    {
-                        name: { text: "Build Smart - AI Chatbots Workshop" },
-                        start: { local: "2025-06-18T14:00:00" },
-                        venue: { name: "Lock, Stock & Barrel", address: { city: "JBR" } },
-                        description: { text: "Learn how to build AI chatbots & agents! Hands-on workshop for entrepreneurs and tech enthusiasts wanting to leverage AI." },
-                        url: "https://www.eventbrite.co.uk/e/build-smart-learn-how-to-build-ai-chatbots-agents-tickets-1343683195609",
-                        eventType: "workshop",
-                        ticket_availability: { 
-                            minimum_ticket_price: { major_value: 25 }, 
-                            total_tickets_available: 20,
-                            total_tickets_sold: 15
-                        }
-                    },
-                    {
-                        name: { text: "Divorced & Dating DXB Speed Dating" },
-                        start: { local: "2025-06-22T19:30:00" },
-                        venue: { name: "Lock, Stock & Barrel", address: { city: "JBR" } },
-                        description: { text: "Speed dating night for Dubai's divorced and dating community. Meet like-minded singles in a fun, relaxed environment." },
-                        url: "https://www.eventbrite.co.uk/e/divorced-dating-dxb-speed-dating-night-tickets-1349748707719",
-                        eventType: "dating",
-                        ticket_availability: { 
-                            minimum_ticket_price: { major_value: 30 }, 
-                            total_tickets_available: 24,
-                            total_tickets_sold: 20
-                        }
-                    }
-                ];
+                // Call your Netlify function
+                const response = await fetch('/.netlify/functions/eventbrite-events');
                 
-                console.log('✅ Displaying real ProLink events:', realEvents.length);
-                displayEvents(realEvents);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('✅ Received events from API:', data);
+                
+                // Debug info
+                console.log(`Total events found: ${data.total_events_found || data.events.length}`);
+                console.log(`Upcoming events: ${data.total_count}`);
+                if (data.debug) {
+                    console.log('Event statuses:', data.debug);
+                }
+                
+                if (data.events && data.events.length > 0) {
+                    // Log each event for debugging
+                    data.events.forEach((event, index) => {
+                        console.log(`Event ${index + 1}: ${event.name.text} - ${event.start.local}`);
+                    });
+                    
+                    // Transform the events to match your format
+                    const transformedEvents = data.events.map(event => {
+                        // Override venue with Lock, Stock & Barrel for all events
+                        event.venue = {
+                            name: "Lock, Stock & Barrel",
+                            address: { city: "JBR" }
+                        };
+                        return event;
+                    });
+                    
+                    displayEvents(transformedEvents);
+                } else {
+                    console.log('No events found, showing sample events');
+                    showSampleEvents();
+                }
                 
             } catch (error) {
                 console.error('❌ Error loading events:', error);
@@ -1293,6 +1247,9 @@
             } else if (eventTitle.toLowerCase().includes('workshop')) {
                 eventEmoji = '🎯';
                 eventColor = '#2ecc71';
+            } else if (eventTitle.toLowerCase().includes('football')) {
+                eventEmoji = '⚽';
+                eventColor = '#27ae60';
             }
 
             // SIMPLIFIED PRICING - ALWAYS "TICKETS AVAILABLE" UNLESS SPECIFIED OTHERWISE
