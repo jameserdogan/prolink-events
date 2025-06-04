@@ -1,14 +1,11 @@
 // netlify/functions/eventbrite-events.js
-// This serverless function proxies requests to Eventbrite API to avoid CORS issues
-
-const fetch = require('node-fetch');
 
 exports.handler = async (event, context) => {
   // Set CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Content-Type': 'application/json'
   };
 
@@ -31,31 +28,17 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    // Your Eventbrite credentials (in production, use environment variables)
-    const API_KEY = 'GMUXCJ75E66YDK52CI';
+    // Get API key from environment variable
+    const API_KEY = process.env.EVENTBRITE_TOKEN;
     
-    // First, let's get the user's information to find the correct organization ID
-    console.log('Getting user info first...');
-    const userResponse = await fetch(`https://www.eventbriteapi.com/v3/users/me/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${API_KEY}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!userResponse.ok) {
-      console.error('User API error:', userResponse.status, userResponse.statusText);
-      throw new Error(`User API error: ${userResponse.status}`);
+    if (!API_KEY) {
+      throw new Error('EVENTBRITE_TOKEN not configured');
     }
 
-    const userData = await userResponse.json();
-    console.log('User data received, ID:', userData.id);
-
-    // Try using the user ID as organization ID (common pattern)
-    const eventbriteUrl = `https://www.eventbriteapi.com/v3/users/me/owned_events/?status=live&order_by=start_asc&expand=venue,ticket_availability`;
+    // Fetch events using the correct endpoint - get ALL events including drafts and scheduled
+    const eventbriteUrl = `https://www.eventbriteapi.com/v3/organizations/90328674763/events/?order_by=start_asc&expand=venue,ticket_availability&page_size=100`;
     
-    console.log('Fetching owned events:', eventbriteUrl);
+    console.log('Fetching ALL events (including drafts)...');
     
     const response = await fetch(eventbriteUrl, {
       method: 'GET',
@@ -66,56 +49,38 @@ exports.handler = async (event, context) => {
     });
 
     if (!response.ok) {
-      console.error('Events API error:', response.status, response.statusText);
-      
-      // If owned_events doesn't work, try organizations endpoint
-      const orgUrl = `https://www.eventbriteapi.com/v3/organizations/${userData.id}/events/?status=live&order_by=start_asc&expand=venue,ticket_availability`;
-      console.log('Trying organization endpoint:', orgUrl);
-      
-      const orgResponse = await fetch(orgUrl, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${API_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!orgResponse.ok) {
-        console.error('Organization API error:', orgResponse.status, orgResponse.statusText);
-        throw new Error(`All API endpoints failed: ${response.status}, ${orgResponse.status}`);
-      }
-
-      const orgData = await orgResponse.json();
-      const now = new Date();
-      const upcomingEvents = orgData.events.filter(event => {
-        const eventDate = new Date(event.start.local);
-        return eventDate > now;
-      });
-
-      console.log(`Found ${upcomingEvents.length} upcoming events via organization endpoint`);
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          events: upcomingEvents,
-          total_count: upcomingEvents.length,
-          fetched_at: new Date().toISOString(),
-          method: 'organization'
-        })
-      };
+      console.error('Eventbrite API error:', response.status);
+      const errorText = await response.text();
+      console.error('Error details:', errorText);
+      throw new Error(`Eventbrite API error: ${response.status}`);
     }
 
     const data = await response.json();
     
-    // Filter to upcoming events only
+    // Log all events with their status
+    console.log(`Total events from API: ${data.events.length}`);
+    data.events.forEach(event => {
+      console.log(`- ${event.name.text} | Status: ${event.status} | Date: ${event.start.local}`);
+    });
+    
+    // Filter to upcoming events only (but include all statuses)
     const now = new Date();
     const upcomingEvents = data.events.filter(event => {
       const eventDate = new Date(event.start.local);
-      return eventDate > now;
+      const isUpcoming = eventDate > now;
+      const isPublic = event.listed !== false; // Include if listed is true or undefined
+      
+      if (!isUpcoming) {
+        console.log(`Filtered out past event: ${event.name.text}`);
+      }
+      if (!isPublic) {
+        console.log(`Filtered out private event: ${event.name.text}`);
+      }
+      
+      return isUpcoming && isPublic;
     });
 
-    console.log(`Found ${upcomingEvents.length} upcoming events via owned_events`);
+    console.log(`Returning ${upcomingEvents.length} upcoming public events`);
 
     return {
       statusCode: 200,
@@ -123,8 +88,18 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         events: upcomingEvents,
         total_count: upcomingEvents.length,
-        fetched_at: new Date().toISOString(),
-        method: 'owned_events'
+        total_events_found: data.events.length,
+        debug: {
+          all_statuses: [...new Set(data.events.map(e => e.status))],
+          upcoming_by_status: {
+            live: upcomingEvents.filter(e => e.status === 'live').length,
+            draft: upcomingEvents.filter(e => e.status === 'draft').length,
+            started: upcomingEvents.filter(e => e.status === 'started').length,
+            ended: upcomingEvents.filter(e => e.status === 'ended').length,
+            completed: upcomingEvents.filter(e => e.status === 'completed').length
+          }
+        },
+        fetched_at: new Date().toISOString()
       })
     };
 
@@ -137,7 +112,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         error: 'Failed to fetch events',
         message: error.message,
-        events: [] // Return empty array so frontend can fall back to sample events
+        events: []
       })
     };
   }
